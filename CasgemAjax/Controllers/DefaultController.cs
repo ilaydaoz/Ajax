@@ -48,6 +48,5 @@ namespace CasgemAjax.Controllers
             context.SaveChanges();
             return NoContent();
         }
-
     }
 }

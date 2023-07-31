@@ -47,6 +47,20 @@
         <br />
         <hr />
     </div>
+    <div id="customerlistbyid">
+        <br />
+        <hr />
+    </div>
+    <div>
+        <input type="text" class="form-control" id="txteditid" placeholder="Güncellencek MÜŞTERİ ID" />
+        <br />
+        <input type="text" class="form-control" id="txteditname" placeholder="Güncellencek MÜŞTERİ Adı" />
+        <br />
+        <input type="text" class="form-control" id="txteditsurname" placeholder="Güncellencek MÜŞTERİ Soyadı" />
+        <br />
+        <input type="text" class="form-control" id="txteditcity" placeholder="Güncellencek MÜŞTERİ Şehri" />
+        <br />
+    </div>
 </div>
 <script>
     $("#btncustomerlist").click(function () {
@@ -59,19 +73,19 @@
                 let values = jQuery.parseJSON(funk1);
                 console.log(values);
                 let tablehtml = `<table class=table table-bordered>
-                            <tr>
-                            <th>Müşteri ID</th>
-                            <th>Müşteri Adı</th>
-                            <th>Müşteri Soyadı</th>
-                            <th>Şehir</th>
-                            </tr>`
+                                <tr>
+                                <th>Müşteri ID</th>
+                                <th>Müşteri Adı</th>
+                                <th>Müşteri Soyadı</th>
+                                <th>Şehir</th>
+                                </tr>`
                 $.each(values, (index, value) => {
                     tablehtml += `<tr>
-                                <td>${value.CostumerID}</td>
-                                <td>${value.Name}</td>
-                                <td>${value.Surname}</td>
-                                <td>${value.City}</td>
-                                </tr>`
+                                    <td>${value.CustomerID}</td>
+                                    <td>${value.Name}</td>
+                                    <td>${value.Surname}</td>
+                                    <td>${value.City}</td>
+                                    </tr>`
                 });
                 tablehtml += "</table>";
                 $("#customerlist").html(tablehtml);
@@ -113,10 +127,43 @@
             dataType: "json",
             type: "Get",
             url: "/Default/GetCustomer/",
-            data: { CostumerID: id },
+            data: { CustomerID: id },
             success: function (funk4) {
                 let result = jQuery.parseJSON(funk4);
                 console.log(result);
+                let htmlstr = `<table class=table table-hover>
+                        <tr>
+                        <th>Müşteri ID</th>
+                        <th>Müşteri Adı</th>
+                        <th>Müşteri Soyadı</th>
+                        <th>Müşteri Şehri</th>
+                        </tr>
+                             <tr>
+                            <th>${result.CustomerID}</th>
+                            <th>${result.Name}</th>
+                            <th>${result.Surname}</th>
+                            <th>${result.City}</th>
+                            </tr>
+                            </table>`;
+                $("#customerlistbyid").html(htmlstr);
+            }
+        });
+    });
+    $("#btncustomeredit").click(function () {
+        let customervalues = {
+            CustomerID: $("#txteditid").val(),
+            Name: $("#txteditname").val(),
+            Surname: $("#txteditsurname").val(),
+            City: $("#txteditcity").val()
+        };
+        $.ajax({
+            type: "post",
+            url: "/Default/UpdateCustomer/",
+            data: customervalues,
+            success: function (funk5) {
+
+
+                swal("Müşteri Güncellendi!", "İyi Çalışmalar", "success");
             }
         });
     });
